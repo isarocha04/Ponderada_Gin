@@ -1,10 +1,8 @@
-# Ponderada Gin Isabela semana 3
+# Ponderada Gin _ Isabela _ semana 3
 
-O objetivo deste projeto é demonstrar a aplicação de testes unitários eficazes em um projeto Go utilizando o framework Gin, o ORM GORM, e o banco de dados PostgreSQL.
+O objetivo desse projeto é demonstrar a aplicação de testes unitários eficazes em um projeto Go utilizando o framework Gin, o ORM GORM, e o banco de dados PostgreSQL.
 
 ## Estrutura do Repositório
-
-O projeto está organizado nas seguintes pastas:
 
 - **`/handlers/`**: Contém os handlers de requisição HTTP para a aplicação.
   - `handler.go`: Define as funções que lidam com as requisições HTTP.
@@ -21,9 +19,8 @@ O projeto está organizado nas seguintes pastas:
 
 - **`go.mod` e `go.sum`**: Gerenciam as dependências do projeto Go.
 
-## Implementação das Funções com Comentários Explicativos
 
-Nesta seção, você encontrará as implementações das funções principais do projeto, acompanhadas de comentários que explicam as técnicas e conceitos de Test-Driven Development (TDD) aplicados.
+## Implementação das Funções com Comentários Explicativos
 
 ### `handler.go`
 
@@ -36,7 +33,7 @@ import (
     "gorm.io/gorm"
 )
 
-// Handler estrutura que contém as dependências necessárias para as operações
+// Handler estrutura que tem as dependências necessárias para as operações
 type Handler struct {
     DB *gorm.DB  // Injeção do banco de dados na estrutura Handler
 }
@@ -51,18 +48,18 @@ func (h *Handler) CreateUser(c *gin.Context) {
         return
     }
 
-    // Tentativa de criar um novo registro de usuário no banco de dados
+    // Teste de criar um novo registro de usuário no banco de dados
     if err := h.DB.Create(&user).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
     }
 
-    // Retorna um status de sucesso com os dados do usuário criado
+    // Retorna que os dados do usuário foram criados com sucesso
     c.JSON(http.StatusCreated, user)
 }
 ```
 
-A função CreateUser demonstra a aplicação de TDD ao testar primeiramente o comportamento esperado da função antes de implementá-la. Os testes garantem que o handler lida corretamente com erros de validação e criação no banco de dados.
+A função CreateUser mostra o TDD ao testar o comportamento esperado da função antes de implementá-la. Os testes mostram que o handler lida corretamente com erros de validação e criação no banco de dados.
 
 ### handler_test.go
 
@@ -97,7 +94,7 @@ func TestCreateUser(t *testing.T) {
     mockDB := new(MockDB)
     handler := &Handler{DB: mockDB}
 
-    // Simula uma resposta bem-sucedida na criação do usuário
+    // Simula a resposta bem-sucedida na criação do usuário
     mockDB.On("Create", mock.AnythingOfType("*handlers.User")).Return(nil)
 
     // Criação de uma requisição HTTP de teste
@@ -114,7 +111,7 @@ func TestCreateUser(t *testing.T) {
 ```
 
 
-Este teste unitário utiliza o mock do banco de dados para isolar o código do handler e focar na lógica de processamento da requisição. Isso é um exemplo claro da aplicação de TDD, onde o teste é escrito para especificar o comportamento antes da implementação.
+Este teste unitário utiliza o mock do banco de dados para isolar o código do handler e focar na lógica de processamento da requisição.
 
 ### database.go
 
@@ -136,7 +133,7 @@ func InitDB(dsn string) (*gorm.DB, error) {
 }
 ```
 
-A função InitDB é responsável por inicializar a conexão com o banco de dados PostgreSQL. Em um contexto de TDD, você escreveria testes para garantir que a conexão é estabelecida corretamente ou que os erros são tratados de forma adequada.
+A função InitDB é responsável por inicializar a conexão com o banco de dados PostgreSQL. Em um contexto de TDD, escreveriamos testes para garantir que a conexão é estabelecida corretamente ou que os erros são tratados de forma adequada.
 
 ### database_test.go
 
@@ -176,4 +173,4 @@ func TestSuite(t *testing.T) {
 }
 ```
 
-Esta suíte de testes mostra como configurar e limpar a conexão com o banco de dados durante os testes. Isso é crucial em TDD para garantir que o ambiente de teste seja isolado e reproduzível.
+Essa variedade de testes mostra como configurar e limpar a conexão com o banco de dados durante os testes. Isso é crucial em TDD para garantirmos que o ambiente de teste seja isolado e reproduzível.
